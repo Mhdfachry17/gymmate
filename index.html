@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101713">
+  <meta name="description" content="GymMate - Personal Gym Assistant untuk jadwal, progres, dan recovery latihan.">
+
+  <title>GymMate — Personal Gym Assistant</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png">
+</head>
+<body>
+  <div class="app-shell">
+
+    <aside class="sidebar">
+      <a href="#dashboard" class="brand">
+        <span class="brand-icon">G</span>
+        <span>GymMate<small>PERSONAL TRAINER</small></span>
+      </a>
+
+      <p class="nav-label">MENU UTAMA</p>
+      <nav class="navigation">
+        <a href="#dashboard" class="nav-link active" data-page="dashboard">⌂ <span>Dashboard</span></a>
+        <a href="#workout" class="nav-link" data-page="workout">◈ <span>Program Latihan</span></a>
+        <a href="#calendar" class="nav-link" data-page="calendar">▦ <span>Kalender</span></a>
+        <a href="#progress" class="nav-link" data-page="progress">↗ <span>Progres Saya</span></a>
+        <a href="#recovery" class="nav-link" data-page="recovery">♡ <span>Recovery</span></a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="profile-mini">
+          <div class="avatar">GM</div>
+          <div>
+            <strong>Gym Member</strong>
+            <small>Hypertrophy · Pemula</small>
+          </div>
+        </div>
+        <button class="btn btn-outline full-width" id="installBtn" hidden>
+          ↓ Instal Aplikasi
+        </button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">PERSONAL GYM ASSISTANT</p>
+          <h1 id="pageTitle">Dashboard</h1>
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-btn" id="notificationBtn" title="Aktifkan notifikasi">♧</button>
+          <div class="today-chip" id="todayLabel">Hari ini</div>
+        </div>
+      </header>
+
+      <!-- DASHBOARD -->
+      <section class="page active" id="dashboard">
+        <div class="welcome-banner">
+          <div>
+            <p class="eyebrow">YOUR NEXT LEVEL STARTS HERE</p>
+            <h2>Bangun otot. <span>Bangun konsistensi.</span></h2>
+            <p>Latihan terencana, progres terukur, dan recovery yang lebih baik.</p>
+            <button class="btn btn-primary" id="startWorkoutBtn">Mulai latihan →</button>
+          </div>
+          <div class="banner-art" aria-hidden="true">💪</div>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card">
+            <span class="stat-icon">▦</span>
+            <p>Sesi minggu ini</p>
+            <h3 id="weeklySessions">0 <small>/ 5</small></h3>
+            <div class="progress-track"><div id="weeklyProgressBar" class="progress-fill"></div></div>
+          </article>
+          <article class="stat-card">
+            <span class="stat-icon">◈</span>
+            <p>Total volume minggu ini</p>
+            <h3 id="weeklyVolume">0 <small>kg</small></h3>
+            <small class="muted">Total beban × repetisi</small>
+          </article>
+          <article class="stat-card">
+            <span class="stat-icon">🔥</span>
+            <p>Streak latihan</p>
+            <h3 id="streakDays">0 <small>hari</small></h3>
+            <small class="muted">Hari latihan berturut-turut</small>
+          </article>
+        </div>
+
+        <div class="content-grid">
+          <article class="panel">
+            <div class="panel-heading">
+              <div><p class="eyebrow">JADWAL HARI INI</p><h3 id="todayWorkoutTitle">Latihan hari ini</h3></div>
+              <span class="status-pill" id="todayWorkoutStatus">Terjadwal</span>
+            </div>
+            <p class="muted" id="todayWorkoutDescription">Program latihan berdasarkan jadwal mingguan.</p>
+            <div id="todayExercisePreview" class="exercise-preview"></div>
+            <button class="btn btn-primary full-width" id="todayActionBtn">Lihat detail latihan</button>
+          </article>
+
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">PROGRAM MINGGUAN</p><h3>Split latihan</h3></div></div>
+            <div id="weekSplit" class="week-split"></div>
+          </article>
+        </div>
+
+        <article class="panel">
+          <div class="panel-heading">
+            <div><p class="eyebrow">RECENT ACTIVITY</p><h3>Riwayat latihan</h3></div>
+            <button class="text-btn" data-go="progress">Lihat semua →</button>
+          </div>
+          <div id="recentLogs"></div>
+        </article>
+      </section>
+
+      <!-- PROGRAM LATIHAN -->
+      <section class="page" id="workout">
+        <div class="section-intro">
+          <div><p class="eyebrow">PUSH · PULL · LEGS</p><h2>Program latihan</h2>
+            <p class="muted">Lima hari latihan per minggu, dengan dua hari pemulihan.</p>
+          </div>
+          <span class="status-pill">90 menit / sesi</span>
+        </div>
+        <div id="workoutDayTabs" class="day-tabs"></div>
+        <article class="panel workout-panel">
+          <div class="panel-heading">
+            <div><p class="eyebrow" id="workoutCategory">WORKOUT</p><h3 id="workoutTitle">Pilih program latihan</h3></div>
+            <span class="status-pill" id="workoutDuration">90 menit</span>
+          </div>
+          <p id="workoutDescription" class="muted"></p>
+          <div id="exerciseList"></div>
+          <button class="btn btn-primary full-width" id="finishWorkoutBtn">Selesaikan sesi latihan</button>
+        </article>
+
+        <article class="panel">
+          <p class="eyebrow">CATATAN LATIHAN</p>
+          <h3>Log beban dan repetisi</h3>
+          <p class="muted">Pilih gerakan, lalu catat hasil set yang benar-benar kamu lakukan.</p>
+          <form id="logForm" class="form-grid">
+            <label>Gerakan
+              <select id="logExercise" required></select>
+            </label>
+            <label>Tanggal
+              <input id="logDate" type="date" required>
+            </label>
+            <label>Set ke-
+              <input id="logSet" type="number" min="1" max="20" value="1" required>
+            </label>
+            <label>Beban (kg)
+              <input id="logWeight" type="number" min="0" step="0.25" placeholder="Contoh: 20" required>
+            </label>
+            <label>Repetisi aktual
+              <input id="logReps" type="number" min="0" max="100" placeholder="Contoh: 10" required>
+            </label>
+            <label>RPE (1–10)
+              <input id="logRpe" type="number" min="1" max="10" step="0.5" value="7" required>
+            </label>
+            <label>RIR (0–5+)
+              <input id="logRir" type="number" min="0" max="10" value="3" required>
+            </label>
+            <label class="form-full">Catatan
+              <input id="logNotes" type="text" placeholder="Contoh: teknik baik, masih terasa ringan">
+            </label>
+            <button class="btn btn-primary form-full" type="submit">Simpan hasil set</button>
+          </form>
+          <div id="overloadSuggestion" class="suggestion-box" hidden></div>
+        </article>
+      </section>
+
+      <!-- KALENDER -->
+      <section class="page" id="calendar">
+        <div class="section-intro">
+          <div><p class="eyebrow">PLAN YOUR WEEK</p><h2>Kalender latihan</h2>
+            <p class="muted">Jadwal latihan pukul 17.00 dengan durasi 90 menit.</p>
+          </div>
+          <button class="btn btn-primary" id="exportCalendarBtn">↓ Ekspor .ICS</button>
+        </div>
+        <article class="panel">
+          <div class="calendar-toolbar">
+            <button class="icon-btn" id="prevWeekBtn" aria-label="Minggu sebelumnya">←</button>
+            <h3 id="calendarMonthLabel">Kalender</h3>
+            <button class="icon-btn" id="nextWeekBtn" aria-label="Minggu berikutnya">→</button>
+          </div>
+          <div class="calendar-grid" id="calendarGrid"></div>
+          <div class="calendar-legend"><span></span> Jadwal latihan <span class="rest-dot"></span> Recovery / istirahat</div>
+        </article>
+        <article class="panel">
+          <p class="eyebrow">INTEGRASI KALENDER</p>
+          <h3>Sinkronkan dengan HP</h3>
+          <p class="muted">Ekspor file kalender, lalu impor ke Google Calendar atau kalender perangkat. Ekspor ini tidak melakukan sinkronisasi otomatis.</p>
+          <button class="btn btn-outline" id="exportCalendarBtn2">Unduh kalender .ICS</button>
+        </article>
+      </section>
+
+      <!-- PROGRES -->
+      <section class="page" id="progress">
+        <div class="section-intro">
+          <div><p class="eyebrow">MEASURE YOUR PROGRESS</p><h2>Progres saya</h2>
+            <p class="muted">Lihat konsistensi, volume latihan, dan riwayat set.</p>
+          </div>
+        </div>
+        <div class="stats-grid">
+          <article class="stat-card"><p>Total set tercatat</p><h3 id="totalSets">0</h3></article>
+          <article class="stat-card"><p>Total volume</p><h3 id="totalVolume">0 <small>kg</small></h3></article>
+          <article class="stat-card"><p>Latihan selesai</p><h3 id="totalWorkouts">0</h3></article>
+        </div>
+        <article class="panel">
+          <div class="panel-heading"><h3>Riwayat set</h3><button id="exportDataBtn" class="btn btn-outline">Ekspor data CSV</button></div>
+          <div id="historyTable" class="table-wrap"></div>
+        </article>
+      </section>
+
+      <!-- RECOVERY -->
+      <section class="page" id="recovery">
+        <div class="section-intro">
+          <div><p class="eyebrow">REST · REPAIR · GROW</p><h2>Recovery</h2>
+            <p class="muted">Pemulihan adalah bagian penting dari pertumbuhan otot.</p>
+          </div>
+        </div>
+        <div class="content-grid">
+          <article class="panel">
+            <p class="eyebrow">DAILY CHECK-IN</p>
+            <h3>Bagaimana kondisi tubuhmu?</h3>
+            <form id="recoveryForm" class="form-grid">
+              <label>Durasi tidur (jam)<input id="sleepHours" type="number" min="0" max="24" step="0.5" value="8" required></label>
+              <label>Energi (1–5)<select id="energyLevel"><option value="1">1 — Sangat rendah</option><option value="2">2 — Rendah</option><option value="3" selected>3 — Cukup</option><option value="4">4 — Baik</option><option value="5">5 — Sangat baik</option></select></label>
+              <label>Nyeri otot (1–5)<select id="sorenessLevel"><option value="1">1 — Tidak ada</option><option value="2">2 — Ringan</option><option value="3" selected>3 — Sedang</option><option value="4">4 — Berat</option><option value="5">5 — Sangat berat</option></select></label>
+              <label>Stres (1–5)<select id="stressLevel"><option value="1">1 — Sangat rendah</option><option value="2">2 — Rendah</option><option value="3" selected>3 — Sedang</option><option value="4">4 — Tinggi</option><option value="5">5 — Sangat tinggi</option></select></label>
+              <button class="btn btn-primary form-full" type="submit">Simpan check-in</button>
+            </form>
+          </article>
+          <article class="panel">
+            <p class="eyebrow">RECOVERY STATUS</p>
+            <h3 id="recoveryTitle">Belum ada check-in hari ini</h3>
+            <p class="muted" id="recoveryAdvice">Catat kondisi tubuh untuk mendapatkan saran pemulihan umum.</p>
+            <div class="recovery-tips">
+              <p>✓ Usahakan tidur 7–9 jam.</p>
+              <p>✓ Konsumsi protein dan kalori yang cukup.</p>
+              <p>✓ Berikan waktu pemulihan pada otot yang dilatih.</p>
+              <p>✓ Hentikan gerakan yang menimbulkan nyeri tajam.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <footer class="app-footer">GYMMATE © 2026 · Train smart, recover better.</footer>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
